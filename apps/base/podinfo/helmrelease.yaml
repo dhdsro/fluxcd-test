@@ -21,8 +21,12 @@ spec:
     remediation:
       retries: 3
   values:
-    replicaCount: 1
     service:
       type: ClusterIP
-    ui:
-      message: "Hello from Flux CD (base)!"
+  valuesFrom:
+    - kind: Secret
+      name: podinfo-values
+      valuesKey: values.yaml
+#    replicaCount: 1
+#    ui:
+#      message: "Hello from Flux CD (base)!"
