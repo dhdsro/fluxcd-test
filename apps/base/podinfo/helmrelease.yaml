@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: podinfo
-      version: "6.x"  # keep within a stable major; can omit to track latest
+      version: "6.x"
       sourceRef:
         kind: HelmRepository
         name: podinfo-charts
