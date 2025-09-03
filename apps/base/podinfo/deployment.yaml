@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podinfo
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: podinfo
+  template:
+    metadata:
+      labels:
+        app: podinfo
+    spec:
+      containers:
+        - name: podinfo
+          image: stefanprodan/podinfo:6.4.0
+          ports:
+            - containerPort: 9898
+              name: http
+          env:
+            - name: PODINFO_UI_COLOR
+              value: "blue"
+            - name: PODINFO_UI_MESSAGE
+              value: "Welcome to Podinfo (base)!"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
