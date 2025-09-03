@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  interval: 5m
+  releaseName: grafana
+  chart:
+    spec:
+      chart: grafana
+      version: "8.4.2"
+      sourceRef:
+        kind: GitRepository
+        name: grafana
+        namespace: default
+  values:
+    # Simple configuration for basic login functionality
+    admin:
+      existingSecret: "grafana-admin-secret"
+      userKey: username
+      passwordKey: password
+
+    # Basic service configuration
+    service:
+      type: ClusterIP
+      port: 80
+
+    # Simple ingress configuration (disabled by default)
+    ingress:
+      enabled: false
+
+    # Basic persistence (disabled for now)
+    persistence:
+      enabled: false
+
+    # Resource limits
+    resources:
+      limits:
+        memory: 256Mi
+        cpu: 100m
+      requests:
+        memory: 128Mi
+        cpu: 50m
+
+    # Disable complex features for now
+    plugins: []
+
+    # Simple security context
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 65534
+      fsGroup: 65534
+
+    # Disable complex datasource configuration for now
+    # (we'll add them later)
+    datasources: {}
+
+    # Basic configuration
+    grafana.ini:
+      server:
+        domain: localhost
+        root_url: "http://localhost:3000"
+      security:
+        admin_user: admin
+        disable_gravatar: true
+      users:
+        allow_sign_up: false
+      auth.anonymous:
+        enabled: false
