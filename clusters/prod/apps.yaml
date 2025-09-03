@@ -7,7 +7,13 @@ spec:
   interval: 5m
   path: "./apps/prod/podinfo"
   prune: true
+  wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   targetNamespace: default
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
