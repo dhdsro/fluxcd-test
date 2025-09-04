@@ -18,6 +18,17 @@ spec:
     deploymentMode: SingleBinary
 
     loki:
+      auth_enabled: false
+
+      commonConfig:
+        replication_factor: 1
+
+      storage:
+        type: filesystem
+        filesystem:
+          chunks_directory: /var/loki/chunks
+          rules_directory: /var/loki/rules
+
       schemaConfig:
         configs:
           - from: 2024-04-01
@@ -27,22 +38,20 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
+
       ingester:
         chunk_encoding: snappy
+
       tracing:
-        enabled: true
+        enabled: false
+
       querier:
         max_concurrent: 2
 
-    # Disable multi-tenancy
-    auth_enabled: false
-
     # Storage configuration
     chunksCache:
-      # Disable chunks cache to reduce memory usage in single binary mode
       enabled: false
     resultsCache:
-      # Disable results cache to reduce memory usage in single binary mode
       enabled: false
 
     # Gateway configuration
@@ -74,6 +83,9 @@ spec:
       persistence:
         enabled: true
         size: 10Gi
+      extraEnv:
+        - name: GOMEMLIMIT
+          value: "900MiB"
 
     # Monitoring
     monitoring:
