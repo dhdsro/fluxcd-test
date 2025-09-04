@@ -12,6 +12,9 @@ data:
       grpc_listen_port: 9095
       log_level: info
     
+    # Multi-tenancy configuration
+    multitenancy_enabled: true
+    
     common:
       storage:
         backend: filesystem
