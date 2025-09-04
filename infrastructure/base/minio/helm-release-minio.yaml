@@ -5,21 +5,49 @@ metadata:
 spec:
   interval: 5m
   releaseName: minio
+  targetNamespace: minio
   chart:
     spec:
       chart: minio
+      version: "14.7.12"
       sourceRef:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
   values:
-    defaultBuckets: "update-service, loki-chunks, loki-ruler, loki-admin, mimir-blocks, mimir-alertmanager, mimir-ruler, tempo-traces"
-    persistence:
-      enabled: false
+    # Authentication
     auth:
       existingSecret: minio-secret
-      rootUserSecretKey: "MINIO_ROOT_USER"
-      rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
+      rootUser: "admin"
+      rootPassword: "1111"
+
+    # Default buckets
+    defaultBuckets: "update-service,loki-chunks,loki-ruler,loki-admin,mimir-blocks,mimir-alertmanager,mimir-ruler,tempo-traces"
+
+    # Disable persistence for testing
+    persistence:
+      enabled: false
+
+    # Service configuration
+    service:
+      type: ClusterIP
+      ports:
+        api: 9000
+        console: 9001
+
+    # Resource limits
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+      requests:
+        memory: 256Mi
+        cpu: 100m
+
+    # Deployment configuration
+    deployment:
+      updateStrategy:
+        type: Recreate
 
     # Health check configuration
     livenessProbe:
@@ -60,3 +88,7 @@ spec:
     podSecurityContext:
       enabled: true
       fsGroup: 1001
+
+    # Network policy (optional)
+    networkPolicy:
+      enabled: false
