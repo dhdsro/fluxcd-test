@@ -16,13 +16,13 @@ spec:
         name: bitnami
         namespace: flux-system
   values:
-    # Authentication - using direct values for simplicity
+    # Authentication
     auth:
       rootUser: "admin"
       rootPassword: "1111"
 
-    # Default buckets (space-separated, not comma-separated for Bitnami chart)
-    defaultBuckets: "update-service loki-chunks loki-ruler loki-admin mimir-blocks mimir-alertmanager mimir-ruler tempo-traces"
+    # Remove default buckets - we'll create them later
+    # defaultBuckets: ""
 
     # Disable persistence for testing
     persistence:
@@ -38,36 +38,44 @@ spec:
     # Resource limits
     resources:
       limits:
-        memory: 1Gi
-        cpu: 500m
-      requests:
         memory: 512Mi
+        cpu: 250m
+      requests:
+        memory: 256Mi
         cpu: 100m
 
-    # Simplified probe configuration
+    # Health probes with longer delays
     livenessProbe:
       enabled: true
-      initialDelaySeconds: 120
+      initialDelaySeconds: 60
       periodSeconds: 30
-      timeoutSeconds: 10
+      timeoutSeconds: 5
       failureThreshold: 6
+      httpGet:
+        path: /minio/health/live
+        port: api
 
     readinessProbe:
       enabled: true
-      initialDelaySeconds: 60
-      periodSeconds: 15
-      timeoutSeconds: 10
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
       failureThreshold: 6
+      httpGet:
+        path: /minio/health/ready
+        port: api
 
-    # Set mode to standalone (single node)
+    # Set mode to standalone
     mode: standalone
 
-    # Disable extra features that might cause issues
+    # Disable extra features
     ingress:
       enabled: false
-
     metrics:
       enabled: false
-
     networkPolicy:
       enabled: false
+
+    # Deployment strategy
+    updateStrategy:
+      type: Recreate
