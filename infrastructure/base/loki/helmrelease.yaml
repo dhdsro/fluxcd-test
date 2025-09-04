@@ -20,27 +20,22 @@ spec:
     loki:
       auth_enabled: false
 
+      # Use the built-in test schema to avoid date parsing issues
+      useTestSchema: true
+
       commonConfig:
         replication_factor: 1
 
       storage:
         type: filesystem
-        filesystem:
-          chunks_directory: /var/loki/chunks
-          rules_directory: /var/loki/rules
-
-      schemaConfig:
-        configs:
-          - from: "2024-04-01"
-            store: tsdb
-            object_store: filesystem
-            schema: v13
-            index:
-              prefix: loki_index_
-              period: 24h
 
       ingester:
         chunk_encoding: snappy
+        lifecycler:
+          ring:
+            kvstore:
+              store: inmemory
+            replication_factor: 1
 
       tracing:
         enabled: false
