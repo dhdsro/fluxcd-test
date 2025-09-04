@@ -20,3 +20,43 @@ spec:
       existingSecret: minio-secret
       rootUserSecretKey: "MINIO_ROOT_USER"
       rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
+
+    # Health check configuration
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+      httpGet:
+        path: /minio/health/live
+        port: api
+        scheme: HTTP
+
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+      httpGet:
+        path: /minio/health/ready
+        port: api
+        scheme: HTTP
+
+    # Security context
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+      capabilities:
+        drop: ["ALL"]
+
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
