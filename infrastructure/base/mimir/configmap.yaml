@@ -48,9 +48,13 @@ data:
         kvstore:
           store: inmemory
     
-    # Query-frontend configuration
-    query_frontend:
-      scheduler_address: 127.0.0.1:9095
+    # Query-scheduler configuration
+    query_scheduler:
+      service_discovery_mode: ring
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
     
     # Ruler configuration
     ruler:
