@@ -18,8 +18,8 @@ spec:
     # Authentication
     auth:
       existingSecret: minio-secret
-      rootUser: "admin"
-      rootPassword: "1111"
+      rootUserSecretKey: "MINIO_ROOT_USER"
+      rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
 
     # Default buckets
     defaultBuckets: "update-service,loki-chunks,loki-ruler,loki-admin,mimir-blocks,mimir-alertmanager,mimir-ruler,tempo-traces"
