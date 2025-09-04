@@ -20,10 +20,14 @@ spec:
     loki:
       auth_enabled: false
 
-      # Remove the test schema and use a proper schema
+      # Add the expand-env flag to handle date parsing
+      extraArgs:
+        - -config.expand-env=true
+
+      # Use a simpler schema configuration
       schemaConfig:
         configs:
-          - from: 2020-10-24
+          - from: "2020-10-24"
             store: boltdb-shipper
             object_store: filesystem
             schema: v11
