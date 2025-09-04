@@ -54,7 +54,7 @@ spec:
             endpoint {
               url = "http://mimir.mimir.svc.cluster.local:8080/api/v1/push"
               headers = {
-                "X-Scope-OrgID" = "demo"
+                "X-Scope-OrgID" = "demo",
               }
             }
           }
