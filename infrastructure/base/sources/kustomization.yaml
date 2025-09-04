@@ -4,3 +4,4 @@ namespace: flux-system
 
 resources:
   - git-source-grafana.yaml
+  - git-source-alloy.yaml

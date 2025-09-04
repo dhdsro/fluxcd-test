@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: alloy
+metadata:
+  name: alloy
+
+resources:
+  - namespace.yaml
+  - helm-release-alloy.yaml
+  - rbac.yaml
+
+#configMapGenerator:
+#  - name: alloy
+#    namespace: alloy
+#    files:
+#      - config.alloy
+#    options:
+#      disableNameSuffixHash: true

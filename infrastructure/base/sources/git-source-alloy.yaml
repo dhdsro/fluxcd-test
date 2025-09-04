@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: alloy
+spec:
+  interval: 10m
+  ref:
+    branch: main
+  timeout: 1m
+  url: https://github.com/grafana/alloy
