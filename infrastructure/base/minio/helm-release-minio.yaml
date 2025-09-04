@@ -6,6 +6,7 @@ spec:
   interval: 5m
   releaseName: minio
   targetNamespace: minio
+  timeout: 10m
   chart:
     spec:
       chart: minio
@@ -15,14 +16,13 @@ spec:
         name: bitnami
         namespace: flux-system
   values:
-    # Authentication
+    # Authentication - using direct values for simplicity
     auth:
-      existingSecret: minio-secret
-      rootUserSecretKey: "MINIO_ROOT_USER"
-      rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
+      rootUser: "admin"
+      rootPassword: "1111"
 
-    # Default buckets
-    defaultBuckets: "update-service,loki-chunks,loki-ruler,loki-admin,mimir-blocks,mimir-alertmanager,mimir-ruler,tempo-traces"
+    # Default buckets (space-separated, not comma-separated for Bitnami chart)
+    defaultBuckets: "update-service loki-chunks loki-ruler loki-admin mimir-blocks mimir-alertmanager mimir-ruler tempo-traces"
 
     # Disable persistence for testing
     persistence:
@@ -38,57 +38,36 @@ spec:
     # Resource limits
     resources:
       limits:
-        memory: 512Mi
+        memory: 1Gi
         cpu: 500m
       requests:
-        memory: 256Mi
+        memory: 512Mi
         cpu: 100m
 
-    # Deployment configuration
-    deployment:
-      updateStrategy:
-        type: Recreate
-
-    # Health check configuration
+    # Simplified probe configuration
     livenessProbe:
       enabled: true
-      initialDelaySeconds: 30
-      periodSeconds: 10
-      timeoutSeconds: 5
+      initialDelaySeconds: 120
+      periodSeconds: 30
+      timeoutSeconds: 10
       failureThreshold: 6
-      successThreshold: 1
-      httpGet:
-        path: /minio/health/live
-        port: api
-        scheme: HTTP
 
     readinessProbe:
       enabled: true
-      initialDelaySeconds: 15
-      periodSeconds: 10
-      timeoutSeconds: 5
+      initialDelaySeconds: 60
+      periodSeconds: 15
+      timeoutSeconds: 10
       failureThreshold: 6
-      successThreshold: 1
-      httpGet:
-        path: /minio/health/ready
-        port: api
-        scheme: HTTP
 
-    # Security context
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      runAsNonRoot: true
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: false
-      capabilities:
-        drop: ["ALL"]
+    # Set mode to standalone (single node)
+    mode: standalone
 
-    podSecurityContext:
-      enabled: true
-      fsGroup: 1001
+    # Disable extra features that might cause issues
+    ingress:
+      enabled: false
 
-    # Network policy (optional)
+    metrics:
+      enabled: false
+
     networkPolicy:
       enabled: false
