@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-config
+data:
+  mimir.yaml: |
+    # Mimir configuration for single-instance deployment
+    target: all
+    
+    # Server configuration
+    server:
+      http_listen_port: 8080
+      grpc_listen_port: 9095
+      log_level: info
+    
+    # Common configuration
+    common:
+      storage:
+        backend: filesystem
+        filesystem:
+          dir: /data
+    
+    # Ingester configuration
+    ingester:
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Distributor configuration  
+    distributor:
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Store-gateway configuration
+    store_gateway:
+      sharding_ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Compactor configuration
+    compactor:
+      sharding_ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Query-frontend configuration
+    query_frontend:
+      scheduler_address: 127.0.0.1:9095
+    
+    # Ruler configuration
+    ruler:
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Alertmanager configuration  
+    alertmanager:
+      sharding_ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: inmemory
+    
+    # Limits
+    limits:
+      # Allow larger ingestion rate for testing
+      ingestion_rate: 100000
+      ingestion_burst_size: 200000
