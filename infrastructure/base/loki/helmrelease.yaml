@@ -20,49 +20,11 @@ spec:
     loki:
       auth_enabled: false
 
-      # Add the expand-env flag to handle date parsing
-      extraArgs:
-        - -config.expand-env=true
-
-      # Use a simpler schema configuration
-      schemaConfig:
-        configs:
-          - from: "2020-10-24"
-            store: boltdb-shipper
-            object_store: filesystem
-            schema: v11
-            index:
-              prefix: index_
-              period: 24h
-
-      storageConfig:
-        boltdb_shipper:
-          active_index_directory: /loki/boltdb-shipper-active
-          cache_location: /loki/boltdb-shipper-cache
-          cache_ttl: 24h
-          shared_store: filesystem
-        filesystem:
-          directory: /loki/chunks
-
       commonConfig:
         replication_factor: 1
 
       storage:
         type: filesystem
-
-      ingester:
-        chunk_encoding: snappy
-        lifecycler:
-          ring:
-            kvstore:
-              store: inmemory
-            replication_factor: 1
-
-      tracing:
-        enabled: false
-
-      querier:
-        max_concurrent: 2
 
     # Storage configuration
     chunksCache:
@@ -74,9 +36,6 @@ spec:
     gateway:
       enabled: true
       replicas: 1
-      service:
-        type: ClusterIP
-        port: 80
 
     # Backend configuration - single binary mode
     backend:
@@ -89,28 +48,9 @@ spec:
     # Single binary configuration
     singleBinary:
       replicas: 1
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 1Gi
-        requests:
-          cpu: 100m
-          memory: 128Mi
       persistence:
         enabled: true
         size: 10Gi
-      extraEnv:
-        - name: GOMEMLIMIT
-          value: "900MiB"
-
-    # Monitoring
-    monitoring:
-      serviceMonitor:
-        enabled: false
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
 
     # Test pods
     test:
