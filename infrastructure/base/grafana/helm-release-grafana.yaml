@@ -69,6 +69,15 @@ spec:
             jsonData:
               timeInterval: "30s"
               queryTimeout: "300s"
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki-gateway.loki.svc.cluster.local
+            isDefault: false
+            editable: true
+            jsonData:
+              maxLines: 1000
+              timeout: "60s"
 
     # Basic configuration
     grafana.ini:
