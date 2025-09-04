@@ -26,36 +26,49 @@ data:
       filesystem:
         dir: /data/ruler
     
+    # Single-instance ingester configuration
     ingester:
       ring:
         kvstore:
           store: inmemory
+        replication_factor: 1
     
+    # Single-instance distributor configuration
     distributor:
       ring:
         kvstore:
           store: inmemory
     
+    # Single-instance store-gateway configuration
     store_gateway:
       sharding_ring:
         kvstore:
           store: inmemory
+        replication_factor: 1
     
+    # Single-instance compactor configuration
     compactor:
       sharding_ring:
         kvstore:
           store: inmemory
     
+    # Single-instance ruler configuration
     ruler:
       ring:
         kvstore:
           store: inmemory
     
+    # Single-instance alertmanager configuration
     alertmanager:
       sharding_ring:
         kvstore:
           store: inmemory
+        replication_factor: 1
     
+    # Limits configured for single instance
     limits:
       ingestion_rate: 100000
       ingestion_burst_size: 200000
+      # Single instance settings
+      max_global_series_per_user: 1000000
+      max_global_series_per_metric: 100000
