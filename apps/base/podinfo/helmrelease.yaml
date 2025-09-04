@@ -23,6 +23,10 @@ spec:
   values:
     service:
       type: ClusterIP
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9898"
+        prometheus.io/path: "/metrics"
   valuesFrom:
     - kind: Secret
       name: podinfo-values
