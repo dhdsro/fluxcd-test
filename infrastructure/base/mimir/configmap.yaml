@@ -16,7 +16,12 @@ data:
       storage:
         backend: filesystem
         filesystem:
-          dir: /data
+          dir: /data/blocks
+    
+    ruler_storage:
+      backend: filesystem
+      filesystem:
+        dir: /data/ruler
     
     ingester:
       ring:
