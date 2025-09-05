@@ -13,7 +13,7 @@ data:
       log_level: info
     
     # Multi-tenancy configuration
-    multitenancy_enabled: true
+    multitenancy_enabled: false
     
     common:
       storage:
