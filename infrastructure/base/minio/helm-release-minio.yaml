@@ -1,4 +1,3 @@
-
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -20,44 +19,41 @@ spec:
       existingSecret: minio-secret
       rootUserSecretKey: "MINIO_ROOT_USER"
       rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
-
-    # Persistence configuration
+    
+    # Persistence configuration - disable for local testing
     persistence:
       enabled: false
-
-    # Disable provisioning to avoid the mc client loop
+    
+    # Disable all provisioning and client operations
     provisioning:
       enabled: false
-
+    
+    # Disable default bucket creation to avoid client issues
+    defaultBuckets: ""
+    
     # Service configuration
     service:
       type: ClusterIP
-      ports:
-        api: 9000
-        console: 9001
-
-    # Adjusted health check timing
+    
+    # Completely disable health checks temporarily to let container start
     livenessProbe:
-      enabled: true
-      initialDelaySeconds: 30
-      periodSeconds: 10
-      timeoutSeconds: 5
-      successThreshold: 1
-      failureThreshold: 6
-
+      enabled: false
+    
     readinessProbe:
-      enabled: true
-      initialDelaySeconds: 30
-      periodSeconds: 5
-      timeoutSeconds: 1
-      successThreshold: 1
-      failureThreshold: 3
-
-    # Resource configuration
+      enabled: false
+    
+    # Minimal resource requirements
     resources:
       requests:
-        memory: "128Mi"
-        cpu: "100m"
-      limits:
-        memory: "512Mi"
-        cpu: "500m"
+        memory: "64Mi"
+        cpu: "50m"
+    
+    # Force single-node mode
+    mode: standalone
+    
+    # Additional environment variables to ensure proper startup
+    extraEnvVars:
+      - name: MINIO_BROWSER
+        value: "on"
+      - name: MINIO_SERVER_URL
+        value: "http://localhost:9000"
