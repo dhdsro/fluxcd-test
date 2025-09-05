@@ -20,6 +20,7 @@ spec:
         create: false
         content: ''
         name: alloy
+        namespace: alloy
         key: config.alloy
       mounts:
         # -- Mount /var/log from the host into the container for log collection.
