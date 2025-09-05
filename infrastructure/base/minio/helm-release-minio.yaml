@@ -5,6 +5,7 @@ metadata:
 spec:
   interval: 5m
   releaseName: minio
+  targetNamespace: minio
   chart:
     spec:
       chart: minio
