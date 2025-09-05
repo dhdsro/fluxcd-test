@@ -35,6 +35,6 @@ prometheus.remote_write "default" {
   }
 
   external_labels = {
-    alloy_instance = env("HOSTNAME")
+    alloy_instance = env("HOSTNAME"),
   }
 }
