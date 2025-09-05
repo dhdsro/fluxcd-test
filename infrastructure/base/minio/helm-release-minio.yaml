@@ -14,6 +14,8 @@ spec:
         name: bitnami
         namespace: flux-system
   values:
+    replicaCount: 1
+
     # Authentication configuration
     auth:
       existingSecret: minio-secret
