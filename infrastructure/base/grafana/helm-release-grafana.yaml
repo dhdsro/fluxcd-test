@@ -5,78 +5,79 @@ metadata:
 spec:
   interval: 5m
   releaseName: grafana
-  targetNamespace: grafana
   chart:
     spec:
       chart: charts/grafana
-      version: "8.4.2"
       sourceRef:
         kind: GitRepository
         name: grafana
-        namespace: flux-system
+        namespace: default
   values:
-    # Simple configuration for basic login functionality
     admin:
+      # Name of the secret. Can be templated.
       existingSecret: "grafana-admin-secret"
-      userKey: username
+      userKey: user
       passwordKey: password
 
-    # Basic service configuration
-    service:
-      type: ClusterIP
-      port: 80
-
-    # Simple ingress configuration (disabled by default)
-    ingress:
-      enabled: false
-
-    # Basic persistence (disabled for now)
-    persistence:
-      enabled: false
-
-    # Resource limits
-    resources:
-      limits:
-        memory: 256Mi
-        cpu: 100m
-      requests:
-        memory: 128Mi
-        cpu: 50m
-
-    # Disable complex features for now
-    plugins: []
-
-    # Simple security context
-    securityContext:
-      runAsNonRoot: true
-      runAsUser: 65534
-      fsGroup: 65534
-
-    # Disable complex datasource configuration for now
-    # (we'll add them later)
+    ## Configure grafana datasources
+    ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+    ##
     datasources:
       datasources.yaml:
         apiVersion: 1
         datasources:
+          - name: Loki
+            type: loki
+            access: proxy
+            orgId: 1
+            url: http://loki-gateway.loki.svc.cluster.local/
+            basicAuth: false
+            isDefault: false
+            version: 1
+            uid: loki
+            editable: false
+            tlsSkipVerifyInsecure: true
+            jsonData:
+              derivedFields:
+                # Field with internal link pointing to data source in Grafana.
+                - datasourceUid: tempo
+                  matcherType: label
+                  matcherRegex: traceId
+                  name: TraceID
+                  # url will be interpreted as query for the datasource
+                  url: '$${__value.raw}'
+                  urlDisplayLabel: View Trace
+
+          - name: Tempo
+            type: tempo
+            access: proxy
+            orgId: 1
+            url: http://tempo.tempo.svc.cluster.local:3200/
+            basicAuth: false
+            isDefault: false
+            version: 1
+            uid: tempo
+            tlsSkipVerifyInsecure: true
+            jsonData:
+              tracesToLogsV2:
+                datasourceUid: loki
+                spanStartTimeShift: '-30m'
+                tags: [{ key: "service.name", value: "service_name" }]
+                spanEndTimeShift: '30m'
+                filterByTraceID: true
+                filterBySpanID: false
+
           - name: Mimir
             type: prometheus
             access: proxy
-            url: http://mimir.mimir.svc.cluster.local:8080/prometheus
+            orgId: 1
+            url: http://mimir-nginx.mimir.svc.cluster.local/prometheus/
+            basicAuth: false
             isDefault: true
-            editable: true
+            version: 1
+            uid: mimir
+            tlsSkipVerifyInsecure: true
             jsonData:
-              timeInterval: "30s"
-              queryTimeout: "300s"
-
-    # Basic configuration
-    grafana.ini:
-      server:
-        domain: localhost
-        root_url: "http://localhost:3000"
-      security:
-        admin_user: admin
-        disable_gravatar: true
-      users:
-        allow_sign_up: false
-      auth.anonymous:
-        enabled: false
+              exemplarTraceIdDestinations:
+                - name: traceId
+                  datasourceUid: tempo

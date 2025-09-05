@@ -4,4 +4,4 @@ namespace: grafana
 
 resources:
   - ../../base/grafana
-  - secret-admin.enc.yaml
+  - grafana-admin-secret.enc.yaml
