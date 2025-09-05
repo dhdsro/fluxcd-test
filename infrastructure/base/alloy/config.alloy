@@ -44,7 +44,7 @@ local.file_match "var_log" {
 // Scrape logs from /var/log directory
 loki.source.file "var_log" {
   targets    = local.file_match.var_log.targets
-  forward_to = [loki.write.default.receiver]
+  forward_to = [loki.process.var_log.receiver]
 
   // Optional: Add file watching and position tracking
   tail_from_end = false
