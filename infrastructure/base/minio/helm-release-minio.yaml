@@ -21,3 +21,11 @@ spec:
       existingSecret: minio-secret
       rootUserSecretKey: "MINIO_ROOT_USER"
       rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
+
+    service:
+      type: ClusterIP
+      ports:
+        api: 9000
+        console: 9001
+
+
