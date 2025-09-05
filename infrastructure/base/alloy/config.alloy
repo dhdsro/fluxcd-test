@@ -1,4 +1,3 @@
-// Kubernetes service discovery for pods
 discovery.kubernetes "pods" {
   role = "pod"
   namespaces {
@@ -6,14 +5,12 @@ discovery.kubernetes "pods" {
   }
 }
 
-// Scrape metrics from discovered pods
 prometheus.scrape "kubernetes_pods" {
   targets    = discovery.kubernetes.pods.targets
   forward_to = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
 }
 
-// Kubernetes service discovery for services
 discovery.kubernetes "services" {
   role = "service"
   namespaces {
@@ -21,17 +18,66 @@ discovery.kubernetes "services" {
   }
 }
 
-// Scrape metrics from services
 prometheus.scrape "kubernetes_services" {
   targets    = discovery.kubernetes.services.targets
   forward_to = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
 }
 
-// Remote write to Mimir with tenant header
 prometheus.remote_write "default" {
   endpoint {
     url = "http://mimir-distributor.mimir.svc.cluster.local:8080/api/v1/push"
+  }
+
+  external_labels = {
+    alloy_instance = env("HOSTNAME"),
+  }
+}
+
+// Local file discovery for /var/logs
+local.file_match "var_logs" {
+  path_targets = [{
+    __path__ = "/var/logs/*",
+  }]
+}
+
+// Scrape logs from /var/logs directory
+loki.source.file "var_logs" {
+  targets    = local.file_match.var_logs.targets
+  forward_to = [loki.write.default.receiver]
+
+  // Optional: Add file watching and position tracking
+  tail_from_end = false
+}
+
+// Process logs and add labels
+loki.process "var_logs" {
+  forward_to = [loki.write.default.receiver]
+
+  stage.static_labels {
+    values = {
+      job = "var-logs",
+      instance = env("HOSTNAME"),
+    }
+  }
+
+  // Extract filename as a label
+  stage.regex {
+    expression = "^/var/logs/(?P<filename>[^/]+)$"
+    source     = "__path__"
+  }
+
+  stage.labels {
+    values = {
+      filename = "",
+    }
+  }
+}
+
+// Write logs to Loki
+loki.write "default" {
+  endpoint {
+    url = "http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push"
   }
 
   external_labels = {
