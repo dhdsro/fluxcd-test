@@ -17,6 +17,7 @@ spec:
         name: flux-system
         namespace: flux-system
   values:
+    multitenancy_enabled: false
     minio:
       enabled: false
     query_scheduler:
