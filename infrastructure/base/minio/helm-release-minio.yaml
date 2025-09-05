@@ -43,19 +43,3 @@ spec:
     
     readinessProbe:
       enabled: false
-    
-    # Minimal resource requirements
-    resources:
-      requests:
-        memory: "64Mi"
-        cpu: "50m"
-    
-    # Force single-node mode
-    mode: standalone
-    
-    # Additional environment variables to ensure proper startup
-    extraEnvVars:
-      - name: MINIO_BROWSER
-        value: "on"
-      - name: MINIO_SERVER_URL
-        value: "http://localhost:9000"
