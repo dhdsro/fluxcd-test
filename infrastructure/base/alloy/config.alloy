@@ -74,6 +74,55 @@ loki.process "var_log" {
   }
 }
 
+// Kubernetes pod log discovery
+discovery.kubernetes "pod_logs" {
+  role = "pod"
+  namespaces {
+    names = ["default", "podinfo", "grafana", "alloy", "mimir", "loki", "minio"]
+  }
+}
+
+// Collect pod logs
+loki.source.kubernetes "pod_logs" {
+  targets    = discovery.kubernetes.pod_logs.targets
+  forward_to = [loki.process.pod_logs.receiver]
+}
+
+// Process pod logs and add labels
+loki.process "pod_logs" {
+  forward_to = [loki.write.default.receiver]
+
+  stage.static_labels {
+    values = {
+      job = "kubernetes-pods",
+    }
+  }
+
+  // Extract standard Kubernetes labels
+  stage.labels {
+    values = {
+      namespace   = "__meta_kubernetes_namespace",
+      pod         = "__meta_kubernetes_pod_name",
+      container   = "__meta_kubernetes_pod_container_name",
+      node        = "__meta_kubernetes_pod_node_name",
+    }
+  }
+
+  // Optional: Parse JSON logs if your apps output JSON
+  stage.json {
+    expressions = {
+      level = "level",
+      msg   = "message",
+    }
+  }
+
+  // Optional: Add timestamp parsing if needed
+  stage.timestamp {
+    source = "timestamp"
+    format = "RFC3339"
+  }
+}
+
 // Write logs to Loki
 loki.write "default" {
   endpoint {
