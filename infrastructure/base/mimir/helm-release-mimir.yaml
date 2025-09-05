@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir
+spec:
+  install:
+    remediation:
+      retries: 3
+    timeout: 20m
+  interval: 5m
+  releaseName: mimir
+  chart:
+    spec:
+      chart: charts/mimir-distributed/mimir-distributed-5.7.0.tgz
+      sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+  values:
+    minio:
+      enabled: false
+    query_scheduler:
+      enabled: true # disabling the scheduler can cause grafana dashboard loading issues
+    alertmanager:
+      enabled: false # no alerts on local deployments. maybe for config tests this could be enabled
+    rollout_operator:
+      enabled: false # only necessary for multi az deployments
+    overrides_exporter:
+      enabled: false # only necessary for multi tenant deployments
+    ruler:
+      enabled: false # only for recording and alerting rules

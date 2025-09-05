@@ -1,0 +1,56 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mimir
+spec:
+  values:
+    mimir:
+      structuredConfig:
+        common:
+          storage:
+            backend: s3
+            s3:
+              endpoint: minio.minio:9000
+              region: us-east-1
+              access_key_id: "${MINIO_USERNAME}"
+              secret_access_key: "${MINIO_SECRET}"
+              insecure: true
+              bucket_lookup_type: path
+        blocks_storage:
+          s3:
+            bucket_name: mimir-blocks
+        alertmanager_storage:
+          s3:
+            bucket_name: mimir-alertmanager
+        ruler_storage:
+          s3:
+            bucket_name: mimir-ruler
+        ingester:
+          ring:
+            replication_factor: 1
+        store_gateway:
+          sharding_ring:
+            replication_factor: 1
+    ingester:
+      replicas: 1
+      zoneAwareReplication:
+        enabled: false # not necessary for local deployments with 1 node
+      extraEnvFrom:
+        - secretRef:
+            name: minio-secret
+    store_gateway:
+      replicas: 1
+      zoneAwareReplication:
+        enabled: false # not necessary for local deployments with 1 node
+      extraEnvFrom:
+        - secretRef:
+            name: minio-secret
+    querier:
+      replicas: 2 # lowering this number can cause grafana dashboard loading issues
+      extraEnvFrom:
+        - secretRef:
+            name: minio-secret
+    compactor:
+      extraEnvFrom:
+        - secretRef:
+            name: minio-secret

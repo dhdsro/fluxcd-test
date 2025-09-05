@@ -4,3 +4,7 @@ namespace: mimir
 
 resources:
   - ../../base/mimir
+  - minio-secret.enc.yaml
+
+patches:
+  - path: helm-release-patch.yaml
