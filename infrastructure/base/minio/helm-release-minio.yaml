@@ -5,41 +5,18 @@ metadata:
 spec:
   interval: 5m
   releaseName: minio
-  targetNamespace: minio
   chart:
     spec:
       chart: minio
       sourceRef:
         kind: HelmRepository
         name: bitnami
-        namespace: flux-system
+        namespace: default
   values:
-    replicaCount: 1
-
-    # Authentication configuration
+    defaultBuckets: "update-service, loki-chunks, loki-ruler, loki-admin, mimir-blocks, mimir-alertmanager, mimir-ruler, tempo-traces"
+    persistence:
+      enabled: false
     auth:
       existingSecret: minio-secret
       rootUserSecretKey: "MINIO_ROOT_USER"
       rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
-    
-    # Persistence configuration - disable for local testing
-    persistence:
-      enabled: false
-    
-    # Disable all provisioning and client operations
-    provisioning:
-      enabled: false
-    
-    # Disable default bucket creation to avoid client issues
-    defaultBuckets: ""
-    
-    # Service configuration
-    service:
-      type: ClusterIP
-    
-    # Completely disable health checks temporarily to let container start
-    livenessProbe:
-      enabled: false
-    
-    readinessProbe:
-      enabled: false
