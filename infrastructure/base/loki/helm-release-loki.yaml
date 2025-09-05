@@ -13,6 +13,17 @@ spec:
         name: flux-system
         namespace: flux-system
   values:
+    # Disable loki-canary
+    monitoring:
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+      serviceMonitor:
+        enabled: false
+      lokiCanary:
+        enabled: false
+
     loki:
       commonConfig:
         replication_factor: 1
