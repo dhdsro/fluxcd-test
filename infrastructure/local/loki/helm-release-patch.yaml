@@ -4,6 +4,17 @@ metadata:
   name: loki
 spec:
   values:
+    # Disable loki-canary:
+    monitoring:
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+      serviceMonitor:
+        enabled: false
+      lokiCanary:
+        enabled: false
+
     loki:
       schemaConfig:
         configs:
