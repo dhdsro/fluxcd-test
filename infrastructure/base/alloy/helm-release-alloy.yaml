@@ -15,82 +15,18 @@ spec:
         namespace: flux-system
 
   values:
-    # Basic Alloy configuration
     alloy:
       configMap:
-        content: |
-          // Kubernetes service discovery for pods
-          discovery.kubernetes "pods" {
-            role = "pod"
-            namespaces {
-              names = ["default", "podinfo", "grafana", "alloy", "mimir"]
-            }
-          }
-
-          // Scrape metrics from discovered pods
-          prometheus.scrape "kubernetes_pods" {
-            targets    = discovery.kubernetes.pods.targets
-            forward_to = [prometheus.remote_write.default.receiver]
-            scrape_interval = "30s"
-          }
-
-          // Kubernetes service discovery for services  
-          discovery.kubernetes "services" {
-            role = "service"
-            namespaces {
-              names = ["default", "podinfo", "grafana", "alloy", "mimir"]
-            }
-          }
-
-          // Scrape metrics from services
-          prometheus.scrape "kubernetes_services" {
-            targets    = discovery.kubernetes.services.targets
-            forward_to = [prometheus.remote_write.default.receiver]
-            scrape_interval = "30s"
-          }
-
-          // Remote write to Mimir with tenant header
-          prometheus.remote_write "default" {
-            endpoint {
-              url = "http://mimir.mimir.svc.cluster.local:8080/api/v1/push"
-              headers = {
-                "X-Scope-OrgID" = "demo",
-              }
-            }
-          }
-
-    # Security context
-    securityContext:
-      runAsNonRoot: true
-      runAsUser: 65534
-      fsGroup: 65534
-
-    serviceAccount:
-      create: true
-      name: alloy
-
-    # Resources
-    resources:
-      limits:
-        memory: 512Mi
-        cpu: 200m
-      requests:
-        memory: 256Mi
-        cpu: 100m
-
-#  values:
-#    alloy:
-#      configMap:
-#        create: false
-#        content: ''
-#        name: alloy
-#        key: config.alloy
-#      mounts:
-#        # -- Mount /var/log from the host into the container for log collection.
-#        varlog: true
-#      extraPorts:
-#        - targetPort: 4317
-#          port: 4317
-#          name: otlp-grpc
-#    controller:
-#      priorityClassName: system-cluster-critical
+        create: false
+        content: ''
+        name: alloy
+        key: config.alloy
+      mounts:
+        # -- Mount /var/log from the host into the container for log collection.
+        varlog: true
+      extraPorts:
+        - targetPort: 4317
+          port: 4317
+          name: otlp-grpc
+    controller:
+      priorityClassName: system-cluster-critical

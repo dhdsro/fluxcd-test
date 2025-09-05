@@ -7,12 +7,11 @@ metadata:
 resources:
   - namespace.yaml
   - helm-release-alloy.yaml
-  - rbac.yaml
 
-#configMapGenerator:
-#  - name: alloy
-#    namespace: alloy
-#    files:
-#      - config.alloy
-#    options:
-#      disableNameSuffixHash: true
+configMapGenerator:
+  - name: alloy
+    namespace: alloy
+    files:
+      - config.alloy
+    options:
+      disableNameSuffixHash: true
