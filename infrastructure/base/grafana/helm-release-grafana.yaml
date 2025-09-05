@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: grafana
-        namespace: default
+        namespace: flux-system
   values:
     admin:
       # Name of the secret. Can be templated.
