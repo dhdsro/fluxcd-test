@@ -1,3 +1,4 @@
+
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -15,17 +16,53 @@ spec:
         namespace: flux-system
   values:
     defaultBuckets: "update-service, loki-chunks, loki-ruler, loki-admin, mimir-blocks, mimir-alertmanager, mimir-ruler, tempo-traces"
+    
+    # Persistence configuration
     persistence:
       enabled: false
+    
+    # Authentication configuration
     auth:
       existingSecret: minio-secret
       rootUserSecretKey: "MINIO_ROOT_USER"
       rootPasswordSecretKey: "MINIO_ROOT_PASSWORD"
-
+    
+    # Service configuration
     service:
       type: ClusterIP
       ports:
         api: 9000
         console: 9001
-
-
+    
+    # Resource limits (optional but recommended)
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+      limits:
+        memory: "512Mi"
+        cpu: "500m"
+    
+    # Health check configuration
+    livenessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 5
+    
+    readinessProbe:
+      enabled: true
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      timeoutSeconds: 1
+      successThreshold: 1
+      failureThreshold: 3
+    
+    # MinIO configuration
+    extraEnvVars:
+      - name: MINIO_SKIP_CLIENT
+        value: "yes"
+      - name: MINIO_DEFAULT_BUCKETS
+        value: "update-service,loki-chunks,loki-ruler,loki-admin,mimir-blocks,mimir-alertmanager,mimir-ruler,tempo-traces"
