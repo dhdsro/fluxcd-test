@@ -14,7 +14,7 @@ prometheus.scrape "kubernetes_pods" {
 discovery.kubernetes "services" {
   role = "service"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy", "mimir"]
+    names = ["default", "podinfo", "grafana", "alloy"]
   }
 }
 
