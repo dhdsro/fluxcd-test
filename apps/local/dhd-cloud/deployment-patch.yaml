@@ -16,6 +16,20 @@ spec:
               value: "/etc/keys/private/private-key"
             - name: APP_USER_SERVICE__JWT_PUBLIC_KEY
               value: "/etc/keys/public/public-key"
+            - name: DATABASE_HOST
+              value: "postgres-service.postgres.svc.cluster.local"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: DATABASE_NAME
+              value: "dhd-services"
+            - name: DATABASE_USER
+              value: "postgres"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
           volumeMounts:
             - name: private-key
               mountPath: /etc/keys/private
@@ -26,9 +40,9 @@ spec:
       volumes:
         - name: private-key
           secret:
-            secretName: local-dhd-cloud-private-key
+            secretName: dhd-cloud-private-key
             defaultMode: 0400
         - name: public-key
           configMap:
-            name: local-dhd-cloud-public-key
+            name: dhd-cloud-public-key
             defaultMode: 0444
