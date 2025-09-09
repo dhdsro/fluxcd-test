@@ -1,7 +1,7 @@
-logging {
-  level = "debug"
-  format = "logfmt"
-}
+//logging {
+//  level = "debug"
+//  format = "logfmt"
+//}
 
 discovery.kubernetes "pods" {
   role = "pod"
