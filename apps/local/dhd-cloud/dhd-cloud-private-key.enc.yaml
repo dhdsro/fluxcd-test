@@ -4,8 +4,8 @@ metadata:
     name: dhd-cloud-private-key
     namespace: dhd-cloud
 type: Opaque
-data:
-    private-key: ENC[AES256_GCM,data:KSTQZF7+/nLt0b0cxIpQQbK0/fCKf4dfT68izUn4Fj8bwMx93zFsRmDtWycLsl2w5FrC6X7D0e6bnKyVuZwxJGkRB7nRaNjai0q/HxtIERJw/KpCsiOMjEELzL4uv0iuVMp5nGE5QlWhVYzM39eqhaEGZa9mIOg=,iv:/8e2r/Sq3yRFGbnscrNA8+LNvRAlvPuA7lQPZe7rosI=,tag:OnQFgTD5przRpf/fhMD5bw==,type:str]
+stringData:
+    private-key: ENC[AES256_GCM,data:eeb1wBAFD8cmzIqh4owQxhYlI8eMFrIO4KcO2krlJHZkhjDDUUCesoi7DZ31qCrrKoUAFljby2Xg8ndtHVlYPUT/nHfKO368oNTNtsePwPcb5ESR5sLcP3zYXZ6WXlRixQX/MuXC5zQ9LJSqSMMhUCMRpkdyk90=,iv:8gBpRP6cS0BxKLczr0Sg2jx2KQ+bGh+WJZH2DtnKZYM=,tag:0isKMkLyI5gGFraKaoin3g==,type:str]
 sops:
     age:
         - recipient: age16f57mdcye3txnjuk3kuhquvfvzwl2gqlqzalwh0082z78znsualsuwv89j
@@ -17,7 +17,7 @@ sops:
             ZlRwR3I4T0cvYWZ4Z1FQcDZZOTJzSWsKNszvdhPlO2lRCOJjj4H4uHJebbpw4AiI
             eIpRZ7kUqGDdwqUcjnbv9bVYPdJL2di/c9ElyMaZH2NafYjlSRoNxA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-09-09T13:16:04Z"
-    mac: ENC[AES256_GCM,data:S8wcIlEONZ09mlgzuTFpBpyZqD6GaI0nixDfCOLKghfe6BxBT+SMiur0xuELMUB46j5poxSRs3c8Y3SfgzNpC86cQvrV+tzutO9GU2s1+U6LXVUgUIDgEgeIrLb5mDScPYmBLGvazaBwxTTrUCTEhhjdp81QkPVkhkKTvXFoDGs=,iv:t8f4HXGvCB1tx8pAm3kXlE0A6+2m5ocOkk1e5Y9j6N0=,tag:3JIaetnO7F2bN+OaulUa0Q==,type:str]
+    lastmodified: "2025-09-09T13:59:37Z"
+    mac: ENC[AES256_GCM,data:/Mw0I3bIT6VU5znqX89jJ7mIOovgD/YbtQHanW+4o3Lj9rgDqie76xmwXoE+3SxmVBnr6gggJTYmEB1ru8ePaRTyt7HWkFDHxJ5ZwQBKsI2iIDTjsBeiayaXOXXpuib3AK8Gxo0UfCN11cE2NrOD0I9jhwnzRUuZxOqdRL7Tc0M=,iv:/b639dJQGl/hd6MJOJ532ASsEa5gK7siWLINiUJl5lI=,tag:zM2poNTN/fThqX8RpQcyMA==,type:str]
     encrypted_regex: ^(data|stringData|values)$
     version: 3.10.2
