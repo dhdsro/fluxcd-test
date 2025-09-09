@@ -29,5 +29,7 @@ spec:
         - targetPort: 4317
           port: 4317
           name: otlp-grpc
+      clustering:
+        enabled: false
     controller:
       priorityClassName: system-cluster-critical
