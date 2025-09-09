@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: dhd-cloud-private-key
+    namespace: dhd-cloud
+type: Opaque
+data:
+    private-key: |
+      -----BEGIN PRIVATE KEY-----
+      MC4CAQAwBQYDK2VwBCIEIPyhRugxDgRwEkwgKZQRp/f5Z/W3wS8LcXK5wD97vcqe
+      -----END PRIVATE KEY-----
