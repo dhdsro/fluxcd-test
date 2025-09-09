@@ -16,15 +16,15 @@ spec:
               value: "/etc/keys/private/private-key"
             - name: APP_USER_SERVICE__JWT_PUBLIC_KEY
               value: "/etc/keys/public/public-key"
-            - name: DATABASE_HOST
+            - name: APP_DATABASE__HOST
               value: "postgres-service.postgres.svc.cluster.local"
-            - name: DATABASE_PORT
+            - name: APP_DATABASE__PORT
               value: "5432"
-            - name: DATABASE_NAME
+            - name: APP_DATABASE__DATABASE
               value: "dhd-services"
-            - name: DATABASE_USER
+            - name: APP_DATABASE__USERNAME
               value: "postgres"
-            - name: DATABASE_PASSWORD
+            - name: APP_DATABASE__PASSWORD
               value: "password"
 #              valueFrom:
 #                secretKeyRef:
