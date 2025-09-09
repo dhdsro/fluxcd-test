@@ -22,9 +22,9 @@ spec:
           env:
             - name: ENVIRONMENT
               value: "local"
-            - name: PRIVATE_KEY_PATH
+            - name: APP_USER_SERVICE__JWT_PRIVATE_KEY
               value: "/etc/keys/private/private-key"
-            - name: PUBLIC_KEY_PATH
+            - name: APP_USER_SERVICE__JWT_PUBLIC_KEY
               value: "/etc/keys/public/public-key"
           volumeMounts:
             - name: private-key
