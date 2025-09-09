@@ -10,6 +10,8 @@ spec:
       containers:
         - name: dhd-cloud
           env:
+            - name: RUST_LOG
+              value: "info,dhd_cloud=debug"
             - name: APP_USER_SERVICE__JWT_PRIVATE_KEY
               value: "/etc/keys/private/private-key"
             - name: APP_USER_SERVICE__JWT_PUBLIC_KEY
