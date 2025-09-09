@@ -13,6 +13,10 @@ spec:
         name: flux-system
         namespace: flux-system
   values:
+    monitoring:
+      lokiCanary:
+        enabled: false
+
     loki:
       commonConfig:
         replication_factor: 1
@@ -23,78 +27,6 @@ spec:
       querier:
         # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
         max_concurrent: 2
-
-    # Add Promtail configuration for better log level detection
-    promtail:
-      enabled: true
-      config:
-        clients:
-          - url: http://loki:3100/loki/api/v1/push
-        scrape_configs:
-          - job_name: kubernetes-pods
-            kubernetes_sd_configs:
-              - role: pod
-            relabel_configs:
-              - source_labels: [ __meta_kubernetes_pod_controller_name ]
-                regex: ([0-9a-z-.]+?)(-[0-9a-f]{8,10})?
-                target_label: __tmp_controller_name
-              - source_labels: [ __meta_kubernetes_pod_label_app_kubernetes_io_name ]
-                target_label: service_name
-            pipeline_stages:
-              # Parse JSON logs
-              - json:
-                  expressions:
-                    level: level
-                    message: message
-                    timestamp: timestamp
-              # Map log levels more precisely
-              - template:
-                  source: level
-                  template: '{{ .level | lower }}'
-              # Set detected_level based on actual log level
-              - labels:
-                  level:
-              - match:
-                  selector: '{level="debug"}'
-                  stages:
-                    - static_labels:
-                        detected_level: "debug"
-              - match:
-                  selector: '{level="info"}'
-                  stages:
-                    - static_labels:
-                        detected_level: "info"
-              - match:
-                  selector: '{level="warn"}'
-                  stages:
-                    - static_labels:
-                        detected_level: "warning"
-              - match:
-                  selector: '{level="error"}'
-                  stages:
-                    - static_labels:
-                        detected_level: "error"
-              - match:
-                  selector: '{level="fatal"}'
-                  stages:
-                    - static_labels:
-                        detected_level: "error"
-              # Default case - if no level detected, check message content
-              - match:
-                  selector: '{detected_level=""}'
-                  stages:
-                    - regex:
-                        expression: '(?i)(error|fail|exception|panic|fatal)'
-                        source: message
-                    - static_labels:
-                        detected_level: "error"
-              # If still no level, mark as info
-              - match:
-                  selector: '{detected_level=""}'
-                  stages:
-                    - static_labels:
-                        detected_level: "info"
-
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
