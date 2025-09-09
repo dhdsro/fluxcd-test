@@ -57,6 +57,11 @@ loki.source.kubernetes "pod_logs" {
 loki.process "pod_logs" {
   forward_to = [loki.write.default.receiver]
 
+  // Drop loki-canary logs before processing
+  stage.drop {
+    expression = "__meta_kubernetes_pod_container_name == \"loki-canary\""
+  }
+
   stage.static_labels {
     values = {
       job = "kubernetes-pods",
