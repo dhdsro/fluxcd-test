@@ -1,7 +1,7 @@
 discovery.kubernetes "pods" {
   role = "pod"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy", "mimir"]
+    names = ["default", "podinfo", "grafana", "alloy"]
   }
 }
 
