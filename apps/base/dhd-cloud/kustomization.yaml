@@ -3,3 +3,7 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - namespace.yaml
+
+commonLabels:
+  app.kubernetes.io/name: dhd-cloud
+  app.kubernetes.io/instance: dhd-cloud

@@ -3,3 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base/dhd-cloud
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+
+namePrefix: local-
