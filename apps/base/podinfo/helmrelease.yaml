@@ -28,7 +28,7 @@ spec:
         prometheus.io/port: "9797"
     env:
       - name: OTEL_EXPORTER_OTLP_ENDPOINT
-        value: "alloy-metrics.alloy.svc.cluster.local:4317"  # Replace with your actual OTLP endpoint
+        value: "alloy.alloy.svc.cluster.local:4317"  # Replace with your actual OTLP endpoint
       - name: OTEL_SERVICE_NAME
         value: "podinfo"
       - name: OTEL_RESOURCE_ATTRIBUTES

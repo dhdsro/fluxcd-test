@@ -29,6 +29,9 @@ spec:
         - targetPort: 4317
           port: 4317
           name: otlp-grpc
+        - targetPort: 4318
+          port: 4318
+          name: otlp-http
       clustering:
         enabled: false
     controller:
