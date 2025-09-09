@@ -4,4 +4,4 @@ namespace: postgres
 
 resources:
   - ../../base/psql
-  - postgres-pvc-patch.yaml
+#  - postgres-pvc-patch.yaml
