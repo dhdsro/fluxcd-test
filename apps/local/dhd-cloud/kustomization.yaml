@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base/dhd-cloud
+  - dhd-cloud-public-key.yaml
+  - dhd-cloud-private-key.enc.yaml
 
 patchesStrategicMerge:
   - deployment-patch.yaml
