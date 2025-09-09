@@ -3,8 +3,6 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - namespace.yaml
-  - dhd-cloud-public-key.yaml
-  - dhd-cloud-private-key.enc.yaml
 
 commonLabels:
   app.kubernetes.io/name: dhd-cloud

@@ -10,5 +10,25 @@ spec:
       containers:
         - name: dhd-cloud
           env:
-            - name: APP_ENVIRONMENT
+            - name: ENVIRONMENT
               value: "local"
+            - name: APP_USER_SERVICE__JWT_PRIVATE_KEY
+              value: "/etc/keys/private/private-key"
+            - name: APP_USER_SERVICE__JWT_PUBLIC_KEY
+              value: "/etc/keys/public/public-key"
+          volumeMounts:
+            - name: private-key
+              mountPath: /etc/keys/private
+              readOnly: true
+            - name: public-key
+              mountPath: /etc/keys/public
+              readOnly: true
+      volumes:
+        - name: private-key
+          secret:
+            secretName: local-dhd-cloud-private-key
+            defaultMode: 0400
+        - name: public-key
+          configMap:
+            name: local-dhd-cloud-public-key
+            defaultMode: 0444

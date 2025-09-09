@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: dhd-cloud-private-key
+    namespace: dhd-cloud
+type: Opaque
+data:
+    private-key: ENC[AES256_GCM,data:KSTQZF7+/nLt0b0cxIpQQbK0/fCKf4dfT68izUn4Fj8bwMx93zFsRmDtWycLsl2w5FrC6X7D0e6bnKyVuZwxJGkRB7nRaNjai0q/HxtIERJw/KpCsiOMjEELzL4uv0iuVMp5nGE5QlWhVYzM39eqhaEGZa9mIOg=,iv:/8e2r/Sq3yRFGbnscrNA8+LNvRAlvPuA7lQPZe7rosI=,tag:OnQFgTD5przRpf/fhMD5bw==,type:str]
+sops:
+    age:
+        - recipient: age16f57mdcye3txnjuk3kuhquvfvzwl2gqlqzalwh0082z78znsualsuwv89j
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBtN09iQWpQQUMxOFJHelov
+            RXdRUG91NWZPQWZnajJPMnJObXJmekxtV3dNCmZlTUpqL09iUWYvZTBteTcwNzlx
+            V1dDM2ZFS0RJTWpBN01ubFVhU09sQUkKLS0tIHJKWjRhaVI0WkdHa3ZnS1lpYi9y
+            ZlRwR3I4T0cvYWZ4Z1FQcDZZOTJzSWsKNszvdhPlO2lRCOJjj4H4uHJebbpw4AiI
+            eIpRZ7kUqGDdwqUcjnbv9bVYPdJL2di/c9ElyMaZH2NafYjlSRoNxA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-09-09T13:16:04Z"
+    mac: ENC[AES256_GCM,data:S8wcIlEONZ09mlgzuTFpBpyZqD6GaI0nixDfCOLKghfe6BxBT+SMiur0xuELMUB46j5poxSRs3c8Y3SfgzNpC86cQvrV+tzutO9GU2s1+U6LXVUgUIDgEgeIrLb5mDScPYmBLGvazaBwxTTrUCTEhhjdp81QkPVkhkKTvXFoDGs=,iv:t8f4HXGvCB1tx8pAm3kXlE0A6+2m5ocOkk1e5Y9j6N0=,tag:3JIaetnO7F2bN+OaulUa0Q==,type:str]
+    encrypted_regex: ^(data|stringData|values)$
+    version: 3.10.2
