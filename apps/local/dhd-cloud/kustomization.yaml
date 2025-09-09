@@ -5,7 +5,7 @@ resources:
   - ../../base/dhd-cloud
   - dhd-cloud-public-key.yaml
   - dhd-cloud-private-key.enc.yaml
-  - postgres-secret.yaml
+  - postgres-secret.enc.yaml
 
 patchesStrategicMerge:
   - deployment-patch.yaml
