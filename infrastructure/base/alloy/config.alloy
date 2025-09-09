@@ -34,46 +34,6 @@ prometheus.remote_write "default" {
   }
 }
 
-// Local file discovery for /var/log
-local.file_match "var_log" {
-  path_targets = [{
-    __path__ = "/var/log/*",
-  }]
-}
-
-// Scrape logs from /var/log directory
-loki.source.file "var_log" {
-  targets    = local.file_match.var_log.targets
-  forward_to = [loki.process.var_log.receiver]
-
-  // Optional: Add file watching and position tracking
-  tail_from_end = false
-}
-
-// Process logs and add labels
-loki.process "var_log" {
-  forward_to = [loki.write.default.receiver]
-
-  stage.static_labels {
-    values = {
-      job = "var-log",
-      instance = env("HOSTNAME"),
-    }
-  }
-
-  // Extract filename as a label
-  stage.regex {
-    expression = "^/var/log/(?P<filename>[^/]+)$"
-    source     = "__path__"
-  }
-
-  stage.labels {
-    values = {
-      filename = "",
-    }
-  }
-}
-
 // Kubernetes pod log discovery
 discovery.kubernetes "pod_logs" {
   role = "pod"
