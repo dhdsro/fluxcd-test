@@ -5,6 +5,6 @@ resources:
   - namespace.yaml
   - postgres-config.yaml
   - postgres-secret.yaml
-  - postgres-pvc.yaml
+#  - postgres-pvc.yaml
   - deployment.yaml
   - service.yaml
