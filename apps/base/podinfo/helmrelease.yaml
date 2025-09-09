@@ -25,8 +25,14 @@ spec:
       type: ClusterIP
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "9898"
-        prometheus.io/path: "/metrics"
+        prometheus.io/port: "9797"
+    env:
+      - name: OTEL_EXPORTER_OTLP_ENDPOINT
+        value: "http://your-otlp-endpoint:4317"  # Replace with your actual OTLP endpoint
+      - name: OTEL_SERVICE_NAME
+        value: "podinfo"
+      - name: OTEL_RESOURCE_ATTRIBUTES
+        value: "service.name=podinfo,service.version=6.x"
   valuesFrom:
     - kind: Secret
       name: podinfo-values
