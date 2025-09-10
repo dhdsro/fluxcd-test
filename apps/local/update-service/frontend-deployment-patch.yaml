@@ -9,5 +9,5 @@ spec:
         - name: frontend
           imagePullPolicy: Always
           env:
-            - name: BASE_URL
-              value: http://localhost:3000
+            - name: VITE_BASE_URL
+              value: http://localhost:8000
