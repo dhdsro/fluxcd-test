@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dhd-cloud-service
+  namespace: dhd-cloud
+spec:
+  selector:
+    app: dhd-cloud
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP
