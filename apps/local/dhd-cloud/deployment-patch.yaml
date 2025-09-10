@@ -31,7 +31,8 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
-
+            - name: APP_APPLICATION__OPEN_TELEMETRY__ENDPOINT
+              value: "alloy.alloy.svc.cluster.local:4317"
           volumeMounts:
             - name: private-key
               mountPath: /etc/keys/private
