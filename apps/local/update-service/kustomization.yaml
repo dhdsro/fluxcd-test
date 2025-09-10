@@ -16,7 +16,8 @@ configMapGenerator:
       - RUST_LOG_FORMAT=json
       - APP_ENVIRONMENT=production
       - APP_DATABASE__HOST=postgres-service.postgres.svc.cluster.local
-      - APP_DATABASE__DATABASE_NAME=dhd-services      - APP_DATABASE__REQUIRE_SSL=false
+      - APP_DATABASE__DATABASE_NAME=dhd-services
+      - APP_DATABASE__REQUIRE_SSL=false
       - APP_APPLICATION__HOST="0.0.0.0"
       - APP_STORAGE__AWS__S3_ENABLE=true
       - APP_STORAGE__AWS__S3_BUCKET="update-service"
