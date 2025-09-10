@@ -7,4 +7,4 @@ spec:
     spec:
       containers:
         - name: frontend
-          imagePullPolicy: Never # this will pull the image from the local repository
+          imagePullPolicy: Always

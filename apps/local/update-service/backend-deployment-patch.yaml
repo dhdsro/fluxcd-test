@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: backend
-          imagePullPolicy: Never # this will pull the image from the local repository
+          imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: minio-secret
