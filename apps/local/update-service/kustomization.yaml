@@ -6,7 +6,6 @@ namespace: update-service
 
 resources:
   - ../../base/update-service
-  - httproute.yaml
   - minio-secret.enc.yaml
   - postgres-secret.enc.yaml
 
