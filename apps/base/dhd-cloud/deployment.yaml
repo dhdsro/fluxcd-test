@@ -16,6 +16,7 @@ spec:
       containers:
         - name: dhd-cloud
           image: 10.0.12.126:5000/dhd-cloud:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
               name: http
