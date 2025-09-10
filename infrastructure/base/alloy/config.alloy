@@ -6,7 +6,7 @@
 discovery.kubernetes "pods" {
   role = "pod"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy"]
+    names = ["default", "podinfo", "grafana", "alloy", "dhd-cloud"]
   }
 }
 
@@ -43,7 +43,7 @@ prometheus.remote_write "default" {
 discovery.kubernetes "pod_logs" {
   role = "pod"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy", "mimir", "loki", "minio"]
+    names = ["default", "podinfo", "grafana", "alloy", "mimir", "loki", "minio", "dhd-cloud"]
   }
 }
 
