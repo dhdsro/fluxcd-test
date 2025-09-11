@@ -1,0 +1,34 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  repo: https://traefik.github.io/charts
+  chart: traefik
+  # Pick a v3-compatible chart (>=28). Pin a version you’re comfortable with.
+  version: 28.0.0
+  targetNamespace: kube-system
+  valuesContent: |
+    image:
+      tag: "v3.5.0"
+    # Keep entrypoints and other settings you already use
+    additionalArguments:
+      - --global.checknewversion
+      - --global.sendanonymoususage
+      - --entrypoints.metrics.address=:9100/tcp
+      - --entrypoints.traefik.address=:9000/tcp
+      - --entrypoints.web.address=:8000/tcp
+      - --entrypoints.websecure.address=:8443/tcp
+      - --api.dashboard=true
+      - --ping=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entrypoint=metrics
+      - --providers.kubernetescrd
+      - --providers.kubernetesingress
+      - --providers.kubernetesingress.ingressendpoint.publishedservice=kube-system/traefik
+      - --entrypoints.websecure.http.tls=true
+      - --providers.kubernetesgateway
+    # If your Service/ports are customized, mirror them here to avoid changes
+    service:
+      type: ClusterIP
