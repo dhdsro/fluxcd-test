@@ -6,7 +6,6 @@ spec:
   parentRefs:
     - name: traefik-gateway
       namespace: kube-system
-      sectionName: http
   hostnames:
     - api.update-service.dhd.intranet
   rules:
@@ -22,3 +21,4 @@ spec:
             value: /v1
       backendRefs:
         - name: update-service
+          port: 8000
