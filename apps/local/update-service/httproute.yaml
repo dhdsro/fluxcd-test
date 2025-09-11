@@ -5,6 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: traefik-gateway
+      namespace: kube-system
       sectionName: http
   hostnames:
     - api.update-service.dhd.intranet
