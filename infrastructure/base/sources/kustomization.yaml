@@ -7,4 +7,3 @@ resources:
   - git-source-grafana.yaml
   - helm-source-bitnami.yaml
   - helm-source-grafana.yaml
-  - helm-source-gateway-api.yaml
