@@ -12,13 +12,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /admin
-        - path:
-            type: PathPrefix
-            value: /releases
-        - path:
-            type: PathPrefix
-            value: /v1
+            value: /
       backendRefs:
         - name: update-service
           port: 8000
