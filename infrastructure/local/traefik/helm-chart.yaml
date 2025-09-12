@@ -12,31 +12,17 @@ spec:
     image:
       tag: "v3.5.0"
     
-    # Configure ports properly for the Traefik Helm chart
     ports:
       web:
         port: 80
-        # Remove expose config - let chart defaults handle it
       websecure:
         port: 443
-        # Remove expose config - let chart defaults handle it
       traefik:
         port: 9000
       metrics:
         port: 9100
     
-    # Use additionalArguments (not deployment.additionalArguments)
     additionalArguments:
-      - --global.checknewversion
-      - --global.sendanonymoususage
-      - --api.dashboard=true
-      - --ping=true
-      - --metrics.prometheus=true
-      - --metrics.prometheus.entrypoint=metrics
-      - --providers.kubernetescrd
-      - --providers.kubernetesingress
-      - --providers.kubernetesingress.ingressendpoint.publishedservice=kube-system/traefik
-      - --entrypoints.websecure.http.tls=true
       - --providers.kubernetesgateway
     
     service:
