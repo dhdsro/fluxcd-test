@@ -7,3 +7,4 @@ namespace: minio
 resources:
   - namespace.yaml
   - helm-release-minio.yaml
+  - coredns-custom.yaml
