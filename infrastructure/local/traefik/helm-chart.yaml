@@ -26,4 +26,4 @@ spec:
       - --providers.kubernetesgateway
     
     service:
-      type: ClusterIP
+      type: LoadBalancer
