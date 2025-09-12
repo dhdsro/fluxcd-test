@@ -12,37 +12,32 @@ spec:
     image:
       tag: "v3.5.0"
     
-    # Override the default ports configuration
+    # Configure ports properly for the Traefik Helm chart
     ports:
       web:
         port: 80
-        expose: true
-        exposedPort: 80
+        # Remove expose config - let chart defaults handle it
       websecure:
         port: 443
-        expose: true
-        exposedPort: 443
+        # Remove expose config - let chart defaults handle it
       traefik:
         port: 9000
-        expose: false
       metrics:
         port: 9100
-        expose: false
     
-    # Use deployment.additionalArguments instead of additionalArguments
-    deployment:
-      additionalArguments:
-        - --global.checknewversion
-        - --global.sendanonymoususage
-        - --api.dashboard=true
-        - --ping=true
-        - --metrics.prometheus=true
-        - --metrics.prometheus.entrypoint=metrics
-        - --providers.kubernetescrd
-        - --providers.kubernetesingress
-        - --providers.kubernetesingress.ingressendpoint.publishedservice=kube-system/traefik
-        - --entrypoints.websecure.http.tls=true
-        - --providers.kubernetesgateway
+    # Use additionalArguments (not deployment.additionalArguments)
+    additionalArguments:
+      - --global.checknewversion
+      - --global.sendanonymoususage
+      - --api.dashboard=true
+      - --ping=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entrypoint=metrics
+      - --providers.kubernetescrd
+      - --providers.kubernetesingress
+      - --providers.kubernetesingress.ingressendpoint.publishedservice=kube-system/traefik
+      - --entrypoints.websecure.http.tls=true
+      - --providers.kubernetesgateway
     
     service:
       type: ClusterIP
