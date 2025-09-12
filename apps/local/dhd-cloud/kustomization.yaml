@@ -27,3 +27,4 @@ configMapGenerator:
 
 patches:
   - path: backend-deployment-patch.yaml
+  - path: frontend-deployment-patch.yaml

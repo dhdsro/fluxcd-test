@@ -16,3 +16,22 @@ spec:
       backendRefs:
         - name: dhd-cloud-backend-service
           port: 8000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dhd-cloud-frontend
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: kube-system
+  hostnames:
+    - ui.cloud.dhd.intranet
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: dhd-cloud-frontend-service
+          port: 3000
