@@ -22,6 +22,7 @@ configMapGenerator:
       - APP_APPLICATION__HOST="0.0.0.0"
       - APP_STORAGE__AWS__S3_ENABLE=true
       - APP_STORAGE__AWS__S3_BUCKET="update-service"
+      - APP_STORAGE__AWS__ENDPOINT="http://storage.cloud.dhd.intranet"
       # - APP_APPLICATION__FRONTEND_URLS=http://frontend.localhost", "http://localhost:3000", "https://frontend.localhost"] this does not work currently https://github.com/rust-cli/config-rs/issues/117
 #      - APP_OPENTELEMETRY__ENDPOINT="http://alloy-metrics.alloy.svc.cluster.local:4317"
 
