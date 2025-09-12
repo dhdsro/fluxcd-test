@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dhd-cloud-backend
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: minio-secret
+            - secretRef:
+                name: postgres-secret
+            - configMapRef:
+                name: dhd-cloud-config

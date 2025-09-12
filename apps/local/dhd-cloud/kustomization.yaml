@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+metadata:
+  name: dhd-cloud
+namespace: dhd-cloud
+
+resources:
+  - ../../base/dhd-cloud
+  - minio-secret.enc.yaml
+  - postgres-secret.enc.yaml
+  - httproutes.yaml
+
+configMapGenerator:
+  - name: update-service-config
+    literals:
+      - RUST_LOG=debug
+      - RUST_LOG_FORMAT=json
+      - APP_ENVIRONMENT=production
+      - APP_DATABASE__HOST=postgres-service.postgres.svc.cluster.local
+      - APP_DATABASE__DATABASE_NAME=dhd-services
+      - APP_DATABASE__REQUIRE_SSL=false
+      - APP_APPLICATION__HOST="0.0.0.0"
+      - APP_STORAGE__AWS__S3_ENABLE=true
+      - APP_STORAGE__AWS__S3_BUCKET="dhd-cloud"
+      # - APP_APPLICATION__FRONTEND_URLS=http://frontend.localhost", "http://localhost:3000", "https://frontend.localhost"] this does not work currently https://github.com/rust-cli/config-rs/issues/117
+#      - APP_OPENTELEMETRY__ENDPOINT="http://alloy-metrics.alloy.svc.cluster.local:4317"
+
+patches:
+  - path: backend-deployment-patch.yaml
