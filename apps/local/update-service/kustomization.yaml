@@ -8,7 +8,7 @@ resources:
   - ../../base/update-service
   - minio-secret.enc.yaml
   - postgres-secret.enc.yaml
-  - httproute.yaml
+  - httproutes.yaml
 
 configMapGenerator:
   - name: update-service-config
