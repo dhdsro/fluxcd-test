@@ -14,5 +14,24 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: update-service
+        - name: update-service-backend-service
           port: 8000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: update-service-frontend
+spec:
+  parentRefs:
+    - name: traefik-gateway
+      namespace: kube-system
+  hostnames:
+    - ui.update-service.dhd.intranet
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: update-service-frontend-service
+          port: 3000

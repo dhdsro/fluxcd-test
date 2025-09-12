@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: update-service-frontend-service
 spec:
   selector:
     app.kubernetes.io/name: update-service
