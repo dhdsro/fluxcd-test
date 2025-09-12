@@ -12,14 +12,6 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /console
-      backendRefs:
-        - name: minio-console
-          namespace: minio
-          port: 9090
-    - matches:
-        - path:
-            type: PathPrefix
             value: /
       backendRefs:
         - name: minio
