@@ -8,6 +8,3 @@ spec:
       containers:
         - name: frontend
           imagePullPolicy: Always
-          env:
-            - name: VITE_BASE_URL
-              value: http://localhost:8000
