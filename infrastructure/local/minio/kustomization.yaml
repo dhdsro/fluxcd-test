@@ -5,3 +5,4 @@ namespace: minio
 resources:
   - ../../base/minio
   - minio-secret.enc.yaml
+  - httproute.yaml
