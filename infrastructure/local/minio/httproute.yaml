@@ -14,7 +14,7 @@ spec:
             - name: "Host"
               value: "storage.cloud.dhd.intranet:9090"
       backendRefs:
-        - name: minio
+        - name: minio-console
           namespace: minio
           port: 9090
 ---
