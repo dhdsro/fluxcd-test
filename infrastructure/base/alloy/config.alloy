@@ -133,6 +133,7 @@ loki.process "pod_logs" {
       pod         = "__meta_kubernetes_pod_name",
       container   = "__meta_kubernetes_pod_container_name",
       node        = "__meta_kubernetes_pod_node_name",
+      service_name  = "__meta_kubernetes_pod_label_app_kubernetes_io_name",
     }
   }
 
@@ -141,8 +142,16 @@ loki.process "pod_logs" {
     expressions = {
       level = "level",
       msg   = "message",
+      service_name = "service_name",
     }
   }
+
+  stage.labels {
+    values = {
+      service_name = "service_name",
+    }
+  }
+
 }
 
 // Write logs to Loki
