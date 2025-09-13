@@ -6,7 +6,7 @@
 discovery.kubernetes "pods" {
   role = "pod"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy", "dhd-cloud"]
+    names = [podinfo", "dhd-cloud", "update-service"]
   }
 }
 
@@ -19,7 +19,7 @@ prometheus.scrape "kubernetes_pods" {
 discovery.kubernetes "services" {
   role = "service"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy"]
+    names = ["podinfo", "dhd-cloud", "update-service"]
   }
 }
 
@@ -43,7 +43,7 @@ prometheus.remote_write "default" {
 discovery.kubernetes "pod_logs" {
   role = "pod"
   namespaces {
-    names = ["default", "podinfo", "grafana", "alloy", "mimir", "loki", "minio", "dhd-cloud"]
+    names = ["podinfo", "dhd-cloud", "update-service"]
   }
 }
 
