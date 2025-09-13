@@ -19,7 +19,7 @@ prometheus.scrape "kubernetes_pods" {
 discovery.kubernetes "services" {
   role = "service"
   namespaces {
-    names = ["podinfo", "dhd-cloud", "update-service"]
+    names = ["podinfo"]
   }
 }
 
