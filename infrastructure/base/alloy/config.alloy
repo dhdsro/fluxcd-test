@@ -17,13 +17,10 @@ discovery.kubernetes "services" {
   }
 }
 
-prometheus.scrape "kubernetes_pods" {
-  targets         = discovery.kubernetes.pods.targets
-  forward_to      = [prometheus.relabel.pod_relabeling.receiver]
-  scrape_interval = "30s"
-}
+// Target relabeling for pods: keep only annotated pods and set port/path before scraping
+prometheus.relabel "pods_targets" {
+  targets = discovery.kubernetes.pods.targets
 
-prometheus.relabel "pod_relabeling" {
   // Keep only pods with prometheus.io/scrape = "true"
   rule {
     source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
@@ -47,17 +44,12 @@ prometheus.relabel "pod_relabeling" {
     target_label  = "__metrics_path__"
     regex         = "(.+)"
   }
-
-  forward_to = [prometheus.remote_write.default.receiver]
 }
 
-prometheus.scrape "kubernetes_services" {
-  targets         = discovery.kubernetes.services.targets
-  forward_to      = [prometheus.relabel.service_relabeling.receiver]
-  scrape_interval = "30s"
-}
+// Target relabeling for services: keep only annotated services and set port/path before scraping
+prometheus.relabel "services_targets" {
+  targets = discovery.kubernetes.services.targets
 
-prometheus.relabel "service_relabeling" {
   // Keep only services with prometheus.io/scrape = "true"
   rule {
     source_labels = ["__meta_kubernetes_service_annotation_prometheus_io_scrape"]
@@ -81,8 +73,18 @@ prometheus.relabel "service_relabeling" {
     target_label  = "__metrics_path__"
     regex         = "(.+)"
   }
+}
 
-  forward_to = [prometheus.remote_write.default.receiver]
+prometheus.scrape "kubernetes_pods" {
+  targets         = prometheus.relabel.pods_targets.output
+  forward_to      = [prometheus.remote_write.default.receiver]
+  scrape_interval = "30s"
+}
+
+prometheus.scrape "kubernetes_services" {
+  targets         = prometheus.relabel.services_targets.output
+  forward_to      = [prometheus.remote_write.default.receiver]
+  scrape_interval = "30s"
 }
 
 prometheus.remote_write "default" {
