@@ -143,12 +143,6 @@ loki.process "pod_logs" {
       msg   = "message",
     }
   }
-
-  // Optional: Add timestamp parsing if needed
-  stage.timestamp {
-    source = "timestamp"
-    format = "RFC3339"
-  }
 }
 
 // Write logs to Loki
