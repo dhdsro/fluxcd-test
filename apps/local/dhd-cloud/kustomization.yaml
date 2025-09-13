@@ -23,7 +23,7 @@ configMapGenerator:
       - APP_STORAGE__AWS__S3_ENABLE=true
       - APP_STORAGE__AWS__S3_BUCKET="dhd-cloud"
       - APP_APPLICATION__FRONTEND_URLS='http://ui.cloud.dhd.intranet'
-      - APP_APPLICATION__OTEL__ENDPOINT="http://alloy-metrics.alloy.svc.cluster.local:4317"
+      - APP_APPLICATION__OTEL__ENDPOINT="http://alloy.alloy.svc.cluster.local:4317"
 
 patches:
   - path: backend-deployment-patch.yaml
