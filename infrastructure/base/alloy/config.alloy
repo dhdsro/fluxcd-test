@@ -18,7 +18,7 @@ discovery.kubernetes "services" {
 }
 
 // Target relabeling for pods: keep only annotated pods and set port/path before scraping
-prometheus.relabel "pods_targets" {
+discovery.relabel "pods_targets" {
   targets = discovery.kubernetes.pods.targets
 
   // Keep only pods with prometheus.io/scrape = "true"
@@ -47,7 +47,7 @@ prometheus.relabel "pods_targets" {
 }
 
 // Target relabeling for services: keep only annotated services and set port/path before scraping
-prometheus.relabel "services_targets" {
+discovery.relabel "services_targets" {
   targets = discovery.kubernetes.services.targets
 
   // Keep only services with prometheus.io/scrape = "true"
@@ -76,13 +76,13 @@ prometheus.relabel "services_targets" {
 }
 
 prometheus.scrape "kubernetes_pods" {
-  targets         = prometheus.relabel.pods_targets.output
+  targets         = discovery.relabel.pods_targets.output
   forward_to      = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
 }
 
 prometheus.scrape "kubernetes_services" {
-  targets         = prometheus.relabel.services_targets.output
+  targets         = discovery.relabel.services_targets.output
   forward_to      = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
 }
