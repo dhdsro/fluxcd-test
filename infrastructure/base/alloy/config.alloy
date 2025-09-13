@@ -14,6 +14,33 @@ prometheus.scrape "kubernetes_pods" {
   targets    = discovery.kubernetes.pods.targets
   forward_to = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
+
+  // Honor Prometheus annotations
+  honor_labels = true
+
+  relabel_configs {
+    // Keep only pods with prometheus.io/scrape = "true"
+    source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
+    action        = "keep"
+    regex         = "true"
+  }
+
+  relabel_configs {
+    // Use custom port if prometheus.io/port annotation is present
+    source_labels = ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
+    action        = "replace"
+    regex         = "([^:]+)(?::\\d+)?;(\\d+)"
+    replacement   = "$1:$2"
+    target_label  = "__address__"
+  }
+
+  relabel_configs {
+    // Use custom metrics path if prometheus.io/path annotation is present
+    source_labels = ["__meta_kubernetes_pod_annotation_prometheus_io_path"]
+    action        = "replace"
+    target_label  = "__metrics_path__"
+    regex         = "(.+)"
+  }
 }
 
 discovery.kubernetes "services" {
@@ -27,6 +54,33 @@ prometheus.scrape "kubernetes_services" {
   targets    = discovery.kubernetes.services.targets
   forward_to = [prometheus.remote_write.default.receiver]
   scrape_interval = "30s"
+
+  // Honor Prometheus annotations
+  honor_labels = true
+
+  relabel_configs {
+    // Keep only services with prometheus.io/scrape = "true"
+    source_labels = ["__meta_kubernetes_service_annotation_prometheus_io_scrape"]
+    action        = "keep"
+    regex         = "true"
+  }
+
+  relabel_configs {
+    // Use custom port if prometheus.io/port annotation is present
+    source_labels = ["__address__", "__meta_kubernetes_service_annotation_prometheus_io_port"]
+    action        = "replace"
+    regex         = "([^:]+)(?::\\d+)?;(\\d+)"
+    replacement   = "$1:$2"
+    target_label  = "__address__"
+  }
+
+  relabel_configs {
+    // Use custom metrics path if prometheus.io/path annotation is present
+    source_labels = ["__meta_kubernetes_service_annotation_prometheus_io_path"]
+    action        = "replace"
+    target_label  = "__metrics_path__"
+    regex         = "(.+)"
+  }
 }
 
 prometheus.remote_write "default" {
